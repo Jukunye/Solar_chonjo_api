@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nc_jlc3$5$(43cq9b_*w^5=k5ac@4s^wda5h9@#)nfkrpa8wda
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'djoser',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -143,10 +144,12 @@ DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
-        'user_create': 'yourapp.serializers.CustomUserCreateSerializer',
-        'user': 'yourapp.serializers.CustomUserSerializer',
+        'user_create': 'accounts.serializers.UserCreateSerializer',
+        'user': 'accounts.serializers.UserSerializer',
     },
     'PERMISSIONS': {
         'user_list': ['rest_framework.permissions.IsAdminUser'],
     },
 }
+
+AUTH_USER_MODEL = 'accounts.User'
