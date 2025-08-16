@@ -2,11 +2,13 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class UserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifier
     for authentication instead of usernames.
     """
+
     def create_user(self, email, password=None, **extra_fields):
         """
         Create and save a User with the given email and password.
@@ -33,18 +35,21 @@ class UserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_superuser=True.'))
         return self.create_user(email, password, **extra_fields)
 
+
 class User(AbstractUser):
     USER_ROLES = (
         ('Admin', 'Admin'),
         ('TECHNICIAN', 'Technician'),
         ('CUSTOMER', 'Customer'),
     )
-    role = models.CharField(max_length=10, choices=USER_ROLES, default='CUSTOMER')
+    role = models.CharField(
+        max_length=10, choices=USER_ROLES, default='CUSTOMER')
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    phone = models.CharField(max_length=15, unique=True, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = UserManager()
 
